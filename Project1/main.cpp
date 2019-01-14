@@ -1,47 +1,46 @@
-#include <fstream>
 #include <iostream>
+#include <fstream>
+#include <string>
+
 using namespace std;
 
-int main() {
-	char data[100];
+/**
+@param in_file
+@param total
+*/
 
-	// open a file in write mode.
-	ofstream outfile;
-	outfile.open("afile.dat");
+void process_name(ifstream& in_file, double& total)
+{
+	string name;
+	int count;
+	double percent;
+	in_file >> name >> count >> percent;
 
-	cout << "Writing to the file" << endl;
-	cout << "Enter your name: ";
-	cin.getline(data, 100);
+	if (in_file.fail()) { return; }
+	if (total > 0) { cout << name << " "; }
+	total = total - percent;
+}
+int main()
+{
+	ifstream in_file;
+	in_file.open("babynames.txt");
+	if (in_file.fail()) { return 0; }
+	
+	double boy_total = 50;
+	double girl_total = 50;
 
-	// write inputted data into the file.
-	outfile << data << endl;
+	while (boy_total > 0 || girl_total > 0)
+	{
+		int rank;
+		in_file >> rank;
+		if (in_file.fail()) {return 0; }
 
-	cout << "Enter your age: ";
-	cin >> data;
-	cin.ignore();
+		cout << rank << " "; 
+		process_name(in_file, boy_total);
+		process_name(in_file, girl_total);
+		cout << endl;
 
-	// again write inputted data into the file.
-	outfile << data << endl;
-
-	// close the opened file.
-	outfile.close();
-
-	// open a file in read mode.
-	ifstream infile;
-	infile.open("afile.dat");
-
-	cout << "Reading from the file" << endl;
-	infile >> data;
-
-	// write the data at the screen.
-	cout << data << endl;
-
-	// again read the data from the file and display it.
-	infile >> data;
-	cout << data << endl;
-
-	// close the opened file.
-	infile.close();
-
+	}
+	system("pause");
 	return 0;
 }
