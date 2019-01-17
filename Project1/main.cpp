@@ -1,46 +1,45 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-
+﻿#include <iostream>
+#include <math.h>
+#include <sstream>
+#include <stdio.h>
 using namespace std;
-
 /**
-@param in_file
-@param total
+Project Euler - Problem 3
+The prime factors of 13195 are 5, 7, 13 and 29.
+What is the largest prime factor of the number 600851475143 ?
 */
 
-void process_name(ifstream& in_file, double& total)
+void primeFactors(long long n)
 {
-	string name;
-	int count;
-	double percent;
-	in_file >> name >> count >> percent;
+	// Print the number of 2s that divide n 
+	while (n % 2 == 0)
+	{
+		printf("%d ", 2);
+		n = n / 2;
+	}
 
-	if (in_file.fail()) { return; }
-	if (total > 0) { cout << name << " "; }
-	total = total - percent;
+	// n must be odd at this point.  So we can skip  
+	// one element (Note i = i +2) 
+	for (int i = 3; i <= sqrt(n); i = i + 2)
+	{
+		// While i divides n, print i and divide n 
+		while (n%i == 0)
+		{
+			printf("%d ", i);
+			n = n / i;
+		}
+	}
+
+	// This condition is to handle the case when n  
+	// is a prime number greater than 2 
+	if (n > 2)
+		printf("%d ", n);
 }
+
 int main()
 {
-	ifstream in_file;
-	in_file.open("babynames.txt");
-	if (in_file.fail()) { return 0; }
-	
-	double boy_total = 50;
-	double girl_total = 50;
-
-	while (boy_total > 0 || girl_total > 0)
-	{
-		int rank;
-		in_file >> rank;
-		if (in_file.fail()) {return 0; }
-
-		cout << rank << " "; 
-		process_name(in_file, boy_total);
-		process_name(in_file, girl_total);
-		cout << endl;
-
-	}
+	long long N = 600851475143;
+	primeFactors(N);
 	system("pause");
 	return 0;
 }
